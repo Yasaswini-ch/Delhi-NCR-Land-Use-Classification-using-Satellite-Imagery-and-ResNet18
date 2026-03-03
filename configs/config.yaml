@@ -1,0 +1,128 @@
+# SRIP AI Sustainability Project Configuration
+# Delhi Air Quality Prediction using Satellite Data
+
+# Project Paths
+paths:
+  project_root: C:\Opensource\DELHI_SAR
+  data_root: C:\Opensource\DELHI_SAR
+  raw_data: C:\Opensource\DELHI_SAR
+  processed_data: C:\Opensource\DELHI_SAR\srip_ai_sustainability\data\processed
+  outputs: C:\Opensource\DELHI_SAR\srip_ai_sustainability\data\outputs
+
+# Data Files
+data_files:
+  delhi_boundary: delhi_airshed.geojson
+  delhi_ncr: delhi_ncr_region.geojson
+  station_csv: station_data.csv
+  satellite_tiff: worldcover_bbox_delhi_ncr_2021.tif
+  rgb_images: rgb
+
+# CRS Settings
+crs:
+  source_crs: EPSG:4326  # WGS84
+  target_crs: EPSG:32644  # UTM Zone 44N (India)
+
+# Grid Parameters
+grid:
+  grid_size_km: 60
+  cell_size_meters: 60000
+
+# Task Configuration
+task:
+  task_type: classification  # "classification" or "regression"
+  classification_mode: 6_class  # "6_class" or "3_class"
+
+# Dataset Parameters
+dataset:
+  train_test_split_ratio: 0.8
+  random_seed: 42
+  validation_split: 0.2
+  label_column: aqi_category
+  cross_validation_folds: 5  # Number of folds for CV
+  aqi_thresholds:
+    good: 50
+    satisfactory: 100
+    moderate: 200
+    poor: 300
+    very_poor: 400
+    severe: 500
+  # 3-class mapping
+  three_class_mapping:
+    Low: [Good, Satisfactory]
+    Medium: [Moderate]
+    High: [Poor, Very Poor, Severe]
+
+# Model Hyperparameters
+model:
+  name: ResNet18LandUse
+  input_channels: 3
+  num_classes: 5
+  pretrained: true
+  dropout: 0.5
+  conv_layers:
+    - filters: 32
+      kernel_size: 3
+      stride: 1
+      padding: 1
+    - filters: 64
+      kernel_size: 3
+      stride: 1
+      padding: 1
+    - filters: 128
+      kernel_size: 3
+      stride: 1
+      padding: 1
+    - filters: 256
+      kernel_size: 3
+      stride: 1
+      padding: 1
+  fc_layers:
+    - 512
+    - 256
+  dropout: 0.5
+  activation: relu
+  mlp_hidden_dims: [128, 64, 32]
+
+# Training Parameters
+training:
+  batch_size: 32
+  num_epochs: 50
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: adam
+  loss_function: cross_entropy
+  scheduler:
+    type: step
+    step_size: 10
+    gamma: 0.5
+  early_stopping:
+    patience: 10
+    min_delta: 0.001
+  save_best_model: true
+
+# Baseline Models for Comparison
+baseline_models:
+  - logistic_regression
+  - random_forest
+  - mlp
+
+# Feature Importance
+feature_importance:
+  method: random_forest  # "random_forest" or "permutation"
+  n_repeats: 30
+
+# Logging Configuration
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_file: srip_ai_sustainability.log
+  console_output: true
+
+# Output Settings
+output:
+  save_grid_shapefile: true
+  save_grid_geopackage: true
+  save_station_mapping: true
+  save_confusion_matrix: true
+  save_training_plots: true
+  plot_dpi: 300
