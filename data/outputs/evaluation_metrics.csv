@@ -1,0 +1,2 @@
+accuracy,f1_macro,f1_weighted,f1_micro,precision_per_class,recall_per_class,support_per_class
+0.0,0.0,0.0,0.0,"[0.0, 0.0, 0.0, 0.0]","[0.0, 0.0, 0.0, 0.0]","[0.0, 0.0, 0.0, 0.0]"
