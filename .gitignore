@@ -131,9 +131,6 @@ Thumbs.db
 # Data files (too large for git)
 *.tif
 *.tiff
-*.png
-*.jpg
-*.jpeg
 data/raw/rgb/
 
 # Model files (too large)
@@ -141,10 +138,28 @@ data/raw/rgb/
 *.pkl
 *.joblib
 
-# Output files
-data/outputs/*.png
+# Output files - keep essential images, exclude large data files
 data/outputs/*.csv
 data/processed/*.csv
+data/outputs/*.pth
+data/outputs/*.shp
+data/outputs/*.dbf
+data/outputs/*.shx
+data/outputs/*.prj
+data/outputs/*.cpg
+data/outputs/*.gpkg
+
+# Keep essential visualization images
+!data/outputs/grid_visualization.png
+!data/outputs/label_distribution.png
+!data/outputs/training_history.png
+!data/outputs/confusion_matrix.png
+!data/outputs/confusion_matrix_normalized.png
+!data/outputs/feature_importance.png
+!data/outputs/prediction_distribution.png
+!data/outputs/per_class_metrics.png
+!data/outputs/baseline_comparison.png
+!data/outputs/dataset_analysis.png
 
 # Temporary files
 *.tmp
